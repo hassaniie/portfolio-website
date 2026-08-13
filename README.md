@@ -55,12 +55,17 @@ Deploy the `dist/` folder to any static host (Netlify, Vercel, GitHub Pages, …
 
 The content is placeholder and intentionally easy to swap:
 
-- **Name / bio / nav / socials / email** — edit `index.html` (search for
-  `Hassan` and `hello@hassan.design`).
+- **Name / hero copy / nav / socials / email** — edit `index.html` (search for
+  `Hassan Mushtaq`, `Lahore`, and `hello@hassan.design`).
+- **Hero portrait** — replace `public/portrait.svg` with your own photo. Either
+  overwrite that file, or drop in e.g. `public/portrait.jpg` and update the
+  `<img src="./portrait.svg">` inside `.hero__portrait` in `index.html`. The
+  frame is `52:62`-ish and uses `object-fit: cover`, so any portrait crops nicely.
+  It already has the scroll parallax applied.
 - **Projects** — the list lives in `index.html` (`.work__item` entries); the
   matching preview palettes/labels are the `PROJECTS` array in
   `src/js/webgl/makeTexture.js`. Keep the two in the same order.
 - **Palette / type / spacing** — CSS custom properties at the top of
-  `src/styles/base.css` (`--accent`, `--bg`, `--ink`, type scale, etc.).
-- **Real project imagery** — swap the procedural canvas in `makeTexture.js` for
-  loaded textures if you'd rather show real screenshots.
+  `src/styles/base.css` (`--accent` lilac, `--bg` navy, `--ink`, type scale, etc.).
+- **Starfield density / calm** — tune `starLayer` (the `step(0.6, …)` threshold)
+  and layer weights in `src/js/webgl/shaders/hero.frag.glsl`.

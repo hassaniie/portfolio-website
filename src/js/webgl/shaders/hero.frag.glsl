@@ -8,96 +8,80 @@ uniform vec2 uMouse;      // 0..1, smoothed
 uniform float uScroll;    // 0..1 scroll progress
 uniform float uIntro;     // 0..1 reveal on load
 
-/* ---- Simplex 2D noise (Ashima / Gustavson) ---- */
-vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-vec3 permute(vec3 x) { return mod289(((x * 34.0) + 1.0) * x); }
-
-float snoise(vec2 v) {
-  const vec4 C = vec4(0.211324865405187, 0.366025403784439,
-                     -0.577350269189626, 0.024390243902439);
-  vec2 i = floor(v + dot(v, C.yy));
-  vec2 x0 = v - i + dot(i, C.xx);
-  vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-  vec4 x12 = x0.xyxy + C.xxzz;
-  x12.xy -= i1;
-  i = mod289(i);
-  vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0))
-                          + i.x + vec3(0.0, i1.x, 1.0));
-  vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy),
-                          dot(x12.zw, x12.zw)), 0.0);
-  m = m * m; m = m * m;
-  vec3 x = 2.0 * fract(p * C.www) - 1.0;
-  vec3 h = abs(x) - 0.5;
-  vec3 ox = floor(x + 0.5);
-  vec3 a0 = x - ox;
-  m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);
-  vec3 g;
-  g.x = a0.x * x0.x + h.x * x0.y;
-  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-  return 130.0 * dot(m, g);
+float hash21(vec2 p) {
+  p = fract(p * vec2(123.34, 345.45));
+  p += dot(p, p + 34.345);
+  return fract(p.x * p.y);
 }
 
-/* soft, low-octave fbm — kept deliberately smooth (no fine detail) */
-float fbm(vec2 p) {
-  float v = 0.0;
-  float a = 0.55;
-  for (int i = 0; i < 3; i++) {
-    v += a * snoise(p);
-    p *= 2.0;
-    a *= 0.5;
+/* One layer of soft, sparse bokeh stars on a hashed cell grid. */
+float starLayer(vec2 uv, float tw) {
+  float m = 0.0;
+  vec2 gv = fract(uv) - 0.5;
+  vec2 id = floor(uv);
+  for (int y = -1; y <= 1; y++) {
+    for (int x = -1; x <= 1; x++) {
+      vec2 offs = vec2(float(x), float(y));
+      vec2 cid = id + offs;
+      // only ~40% of cells carry a star -> sparse, calm
+      float present = step(0.6, hash21(cid + 7.1));
+      float n = hash21(cid);
+      float n2 = hash21(cid + 41.3);
+      vec2 pos = offs + vec2(n, n2) - 0.5 - gv;
+      float d = length(pos);
+      float size = mix(0.015, 0.26, n2 * n2);       // few large, soft bokeh
+      float bright = mix(0.05, 0.8, n);
+      float twinkle = 0.82 + 0.18 * sin(tw * 1.2 + n * 30.0);
+      float core = smoothstep(size, 0.0, d) * bright * twinkle;
+      float glow = smoothstep(size * 3.5, 0.0, d) * bright * 0.10;
+      m += (core + glow) * present;
+    }
   }
-  return v;
-}
-
-float hash(vec2 p) {
-  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+  return m;
 }
 
 void main() {
   vec2 uv = vUv;
+  float asp = uResolution.x / uResolution.y;
   vec2 p = uv;
-  p.x *= uResolution.x / uResolution.y;
+  p.x *= asp;
 
-  // very slow drift
-  float t = uTime * 0.02;
+  float t = uTime * 0.04;
 
-  // gentle, wide mouse lift — a soft breath of light, not a ripple
+  // subtle navy base gradient
+  vec3 top = vec3(0.030, 0.038, 0.060);    // ~#080a0f
+  vec3 bottom = vec3(0.044, 0.052, 0.080); // ~#0b0d14
+  vec3 col = mix(bottom, top, smoothstep(0.0, 1.0, uv.y));
+
+  // soft mouse glow — a faint breath of light
   vec2 mo = uMouse;
-  mo.x *= uResolution.x / uResolution.y;
-  float lift = smoothstep(0.85, 0.0, distance(p, mo)) * 0.10;
+  mo.x *= asp;
+  float glow = smoothstep(0.75, 0.0, distance(p, mo));
+  col += vec3(0.05, 0.045, 0.085) * glow * 0.5;
 
-  // one large-scale, low-frequency field — smooth, no veins
-  float n = fbm(p * 0.65 + vec2(t, -t * 0.7));
-  n = n * 0.5 + 0.5;                     // -> 0..1
+  // three parallaxed star layers (deeper layers drift + scroll slower/faster)
+  float s = 0.0;
+  s += starLayer(p * 3.0 + vec2(t * 0.20, uScroll * 0.6), uTime) * 0.60;
+  s += starLayer(p * 6.0 + vec2(-t * 0.12, uScroll * 1.1) + 20.0, uTime) * 0.42;
+  s += starLayer(p * 10.0 + vec2(t * 0.08, uScroll * 1.9) + 50.0, uTime) * 0.30;
 
-  // a calm directional base gradient so the surface reads as one soft wash
-  float grad = clamp(uv.x * 0.45 + (1.0 - uv.y) * 0.7, 0.0, 1.0);
+  // cool white with a lilac tint
+  vec3 starCol = mix(vec3(0.86, 0.88, 0.96), vec3(0.72, 0.66, 0.96), 0.4);
+  col += starCol * s;
 
-  // mostly gradient, a whisper of noise for organic depth
-  float field = grad * 0.6 + n * 0.4 + lift;
+  // vignette
+  float vig = smoothstep(1.4, 0.35, length((uv - 0.5) * vec2(1.05, 1.2)));
+  col *= mix(0.72, 1.0, vig);
 
-  // near-value dark duotone -> smooth, low cognitive load
-  vec3 c0 = vec3(0.035, 0.035, 0.040); // ~#09090a
-  vec3 c1 = vec3(0.072, 0.068, 0.092); // deep plum-grey
-  vec3 c2 = vec3(0.110, 0.104, 0.134); // gentle lift
-  vec3 col = mix(c0, c1, smoothstep(0.12, 0.78, field));
-  col = mix(col, c2, smoothstep(0.72, 1.05, field) * 0.5);
+  // scroll fade
+  col *= 1.0 - uScroll * 0.4;
 
-  // subtle top darkening (behind nav) + scroll fade
-  col *= 1.0 - uv.y * 0.08;
-  col *= 1.0 - uScroll * 0.5;
-
-  // soft vignette
-  float vig = smoothstep(1.4, 0.4, length((uv - 0.5) * vec2(1.1, 1.25)));
-  col *= mix(0.7, 1.0, vig);
-
-  // barely-there grain to avoid banding
-  float g = hash(gl_FragCoord.xy + fract(uTime) * 100.0);
-  col += (g - 0.5) * 0.012;
+  // faint grain to avoid banding
+  float g = hash21(gl_FragCoord.xy + fract(uTime) * 50.0);
+  col += (g - 0.5) * 0.015;
 
   // intro reveal — sweep up from black
-  float reveal = smoothstep(uv.y - 0.15, uv.y + 0.15, uIntro * 1.3);
+  float reveal = smoothstep(uv.y - 0.2, uv.y + 0.2, uIntro * 1.4);
   col *= reveal;
 
   gl_FragColor = vec4(col, 1.0);

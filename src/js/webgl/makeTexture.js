@@ -4,7 +4,7 @@
  */
 
 const PROJECTS = [
-  { name: 'Aperture', tag: 'Design system', a: '#1b2a4a', b: '#c8ff4d' },
+  { name: 'Aperture', tag: 'Design system', a: '#1b2a4a', b: '#b4a7f5' },
   { name: 'Halcyon', tag: 'Fintech · iOS', a: '#2a1b3d', b: '#ff9a6b' },
   { name: 'Monolith', tag: 'Brand · WebGL', a: '#111214', b: '#8f8a7e' },
   { name: 'Verdant', tag: 'Climate platform', a: '#12291f', b: '#9cf0c0' },
