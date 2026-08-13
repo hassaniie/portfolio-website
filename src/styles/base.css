@@ -1,0 +1,178 @@
+/* ============================================================
+   BASE — reset, design tokens, typography
+   ============================================================ */
+@import '@fontsource/fraunces/400.css';
+@import '@fontsource/fraunces/400-italic.css';
+@import '@fontsource/fraunces/500.css';
+@import '@fontsource/space-grotesk/300.css';
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/500.css';
+
+:root {
+  /* palette — near-black canvas, warm bone ink */
+  --ink: #f4f1ea;
+  --ink-soft: #b8b4ac;
+  --ink-mute: #6f6c66;
+  --bg: #0a0a0b;
+  --bg-raise: #101012;
+  --line: rgba(244, 241, 234, 0.12);
+  --line-soft: rgba(244, 241, 234, 0.06);
+  --accent: #c8ff4d; /* electric chartreuse — used with extreme restraint */
+
+  /* type */
+  --sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+
+  /* fluid scale */
+  --step--1: clamp(0.78rem, 0.74rem + 0.2vw, 0.9rem);
+  --step-0: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+  --step-1: clamp(1.3rem, 1.1rem + 1vw, 2rem);
+  --step-2: clamp(1.8rem, 1.4rem + 2vw, 3rem);
+  --step-3: clamp(2.6rem, 1.8rem + 4vw, 5rem);
+  --step-mega: clamp(3rem, 0.5rem + 11vw, 11rem);
+
+  --gutter: clamp(1.25rem, 1rem + 3vw, 4.5rem);
+  --ease: cubic-bezier(0.62, 0.05, 0.01, 0.99);
+
+  --radius: 4px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: var(--step-0);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* hide native cursor only when custom cursor is active */
+body.has-cursor,
+body.has-cursor a,
+body.has-cursor button {
+  cursor: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+em {
+  font-style: italic;
+}
+
+::selection {
+  background: var(--accent);
+  color: #0a0a0b;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+}
+
+/* film grain overlay */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* fixed webgl canvas */
+.webgl {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* shared section header */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0 var(--gutter);
+  margin-bottom: clamp(2rem, 1rem + 4vw, 5rem);
+  border-top: 1px solid var(--line);
+  padding-top: 1.5rem;
+}
+.section-index {
+  font-size: var(--step--1);
+  color: var(--ink-mute);
+  font-variant-numeric: tabular-nums;
+}
+.section-tag {
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--ink-soft);
+}
+
+/* utility: masked reveal wrapper */
+.line,
+[data-reveal],
+[data-split] {
+  will-change: transform;
+}
+
+/* accessibility: honor reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
