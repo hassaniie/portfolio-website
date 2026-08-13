@@ -14,7 +14,7 @@ project visuals — so nothing depends on external CDNs or image hosts.
 - **[Three.js](https://threejs.org/)** — WebGL + custom GLSL shaders
 - **[GSAP](https://gsap.com/) + ScrollTrigger** — animation & scroll orchestration
 - **[Lenis](https://lenis.darkroom.engineering/)** — smooth scroll
-- **[@fontsource](https://fontsource.org/)** — self-hosted Fraunces (serif) + Space Grotesk (sans)
+- **[@fontsource](https://fontsource.org/)** — self-hosted Newsreader (serif headings, 16pt optical size · 300) + Instrument Sans (body)
 
 ## Run it
 

@@ -1,12 +1,9 @@
 /* ============================================================
    BASE — reset, design tokens, typography
    ============================================================ */
-@import '@fontsource/fraunces/400.css';
-@import '@fontsource/fraunces/400-italic.css';
-@import '@fontsource/fraunces/500.css';
-@import '@fontsource/space-grotesk/300.css';
-@import '@fontsource/space-grotesk/400.css';
-@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource-variable/newsreader/standard.css';
+@import '@fontsource-variable/newsreader/standard-italic.css';
+@import '@fontsource-variable/instrument-sans/standard.css';
 
 :root {
   /* palette — near-black canvas, warm bone ink */
@@ -20,8 +17,8 @@
   --accent: #c8ff4d; /* electric chartreuse — used with extreme restraint */
 
   /* type */
-  --sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans: 'Instrument Sans Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --serif: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
 
   /* fluid scale */
   --step--1: clamp(0.78rem, 0.74rem + 0.2vw, 0.9rem);
@@ -53,10 +50,13 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
-  font-weight: 300;
+  font-weight: 400;
   font-size: var(--step-0);
   line-height: 1.5;
   letter-spacing: 0.01em;
+  /* Newsreader's optical-size axis — 16pt per the type spec. Inherited by all;
+     Instrument Sans has no opsz axis so it simply ignores this. */
+  font-variation-settings: 'opsz' 16;
   overflow-x: hidden;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;

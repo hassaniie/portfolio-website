@@ -84,11 +84,11 @@ export function makeProjectCanvas(index, size = 512) {
 
   // label
   ctx.fillStyle = 'rgba(244,241,234,0.55)';
-  ctx.font = `500 ${Math.round(w * 0.035)}px "Space Grotesk", sans-serif`;
+  ctx.font = `500 ${Math.round(w * 0.035)}px "Instrument Sans Variable", sans-serif`;
   ctx.fillText(p.tag.toUpperCase(), w * 0.08, h * 0.12 - 14);
 
   ctx.fillStyle = '#f4f1ea';
-  ctx.font = `400 ${Math.round(w * 0.15)}px "Fraunces", Georgia, serif`;
+  ctx.font = `300 ${Math.round(w * 0.15)}px "Newsreader Variable", Georgia, serif`;
   ctx.fillText(p.name, w * 0.075, h * 0.88);
 
   return canvas;

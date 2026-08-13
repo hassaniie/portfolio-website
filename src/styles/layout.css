@@ -285,7 +285,7 @@
 }
 .hero__lead strong {
   color: var(--ink);
-  font-weight: 400;
+  font-weight: 600;
 }
 .hero__scroll {
   display: inline-flex;
@@ -598,6 +598,24 @@
   color: var(--ink-mute);
   text-transform: uppercase;
   letter-spacing: 0.12em;
+}
+
+/* ---------- SERIF HEADING WEIGHT (Newsreader 16pt · 300) ----------
+   Consolidated so every Newsreader heading lands on the light 300 weight
+   the type spec calls for, overriding the per-component defaults above. */
+.preloader__count,
+.nav__mark,
+.hero__title,
+.hero__line--serif,
+.about__statement,
+.stats__num,
+.work__name,
+.cap__card h3,
+.strip__track,
+.contact__cta,
+.menu__links a {
+  font-weight: 300;
+  font-variation-settings: 'opsz' 16;
 }
 
 /* ---------- RESPONSIVE ---------- */
