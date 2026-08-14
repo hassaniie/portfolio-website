@@ -4,7 +4,7 @@
  */
 
 const PROJECTS = [
-  { name: 'Aperture', tag: 'Design system', a: '#1b2a4a', b: '#c8ff4d' },
+  { name: 'Aperture', tag: 'Design system', a: '#1b2a4a', b: '#b4a7f5' },
   { name: 'Halcyon', tag: 'Fintech · iOS', a: '#2a1b3d', b: '#ff9a6b' },
   { name: 'Monolith', tag: 'Brand · WebGL', a: '#111214', b: '#8f8a7e' },
   { name: 'Verdant', tag: 'Climate platform', a: '#12291f', b: '#9cf0c0' },
@@ -84,11 +84,11 @@ export function makeProjectCanvas(index, size = 512) {
 
   // label
   ctx.fillStyle = 'rgba(244,241,234,0.55)';
-  ctx.font = `500 ${Math.round(w * 0.035)}px "Space Grotesk", sans-serif`;
+  ctx.font = `500 ${Math.round(w * 0.035)}px "Instrument Sans Variable", sans-serif`;
   ctx.fillText(p.tag.toUpperCase(), w * 0.08, h * 0.12 - 14);
 
   ctx.fillStyle = '#f4f1ea';
-  ctx.font = `400 ${Math.round(w * 0.15)}px "Fraunces", Georgia, serif`;
+  ctx.font = `300 ${Math.round(w * 0.15)}px "Newsreader Variable", Georgia, serif`;
   ctx.fillText(p.name, w * 0.075, h * 0.88);
 
   return canvas;

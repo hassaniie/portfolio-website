@@ -7,18 +7,36 @@ import { splitLines } from './splitText.js';
  * curtain rather than firing under it.
  */
 export function revealHero(reducedMotion) {
-  const splits = gsap.utils.toArray('.hero [data-split]');
+  const headline = document.querySelector('[data-hero-headline]');
   const fades = gsap.utils.toArray('.hero [data-reveal]');
+  const portrait = document.querySelector('[data-hero-parallax]');
+
   if (reducedMotion) {
-    gsap.set([...splits, ...fades], { yPercent: 0, y: 0, opacity: 1 });
+    gsap.set([headline, ...fades, portrait].filter(Boolean), {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      clipPath: 'none',
+    });
     return;
   }
-  gsap.set(splits, { yPercent: 110 });
-  gsap.set(fades, { y: 24, opacity: 0 });
-  gsap
-    .timeline({ delay: 0.15 })
-    .to(splits, { yPercent: 0, duration: 1.25, ease: 'power4.out', stagger: 0.12 }, 0)
-    .to(fades, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', stagger: 0.1 }, 0.35);
+
+  const tl = gsap.timeline({ delay: 0.15 });
+
+  if (headline) {
+    gsap.set(headline, { opacity: 0, y: 40, clipPath: 'inset(0 0 100% 0)' });
+    tl.to(
+      headline,
+      { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 1.3, ease: 'power4.out' },
+      0
+    );
+  }
+  if (portrait) {
+    gsap.set(portrait, { opacity: 0, scale: 1.08 });
+    tl.to(portrait, { opacity: 1, scale: 1, duration: 1.4, ease: 'power3.out' }, 0.25);
+  }
+  gsap.set(fades, { y: 26, opacity: 0 });
+  tl.to(fades, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', stagger: 0.09 }, 0.4);
 }
 
 /**
@@ -95,6 +113,21 @@ export function initReveals(reducedMotion) {
         }),
     });
   });
+
+  // ---- hero portrait parallax (scrolls faster than the rest of the page) ----
+  const portrait = document.querySelector('[data-hero-parallax]');
+  if (portrait && window.matchMedia('(min-width: 861px)').matches) {
+    gsap.to(portrait, {
+      yPercent: -26,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+      },
+    });
+  }
 
   // ---- parallax layers ----
   gsap.utils.toArray('[data-parallax]').forEach((el) => {
