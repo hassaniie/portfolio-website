@@ -44,16 +44,39 @@ export function initClock() {
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
+  // legacy footer clock (contact section), if present
   const clock = document.getElementById('clock');
-  if (!clock) return;
-  const tick = () => {
-    clock.textContent = new Date().toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false,
-    });
-  };
-  tick();
-  setInterval(tick, 1000);
+  if (clock) {
+    const tickLegacy = () => {
+      clock.textContent = new Date().toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      });
+    };
+    tickLegacy();
+    setInterval(tickLegacy, 1000);
+  }
+
+  // nav clock — live Lahore (Asia/Karachi, GMT+5) split into digit boxes
+  const h = document.getElementById('clk-h');
+  const m = document.getElementById('clk-m');
+  const mer = document.getElementById('clk-mer');
+  if (h && m) {
+    const tickLahore = () => {
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Karachi',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      }).formatToParts(new Date());
+      const get = (type) => parts.find((p) => p.type === type)?.value ?? '';
+      h.textContent = get('hour').padStart(2, '0');
+      m.textContent = get('minute').padStart(2, '0');
+      if (mer) mer.textContent = get('dayPeriod').toUpperCase();
+    };
+    tickLahore();
+    setInterval(tickLahore, 1000);
+  }
 }

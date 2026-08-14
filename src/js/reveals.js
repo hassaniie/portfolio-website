@@ -8,11 +8,12 @@ import { splitLines } from './splitText.js';
  */
 export function revealHero(reducedMotion) {
   const headline = document.querySelector('[data-hero-headline]');
-  const fades = gsap.utils.toArray('.hero [data-reveal]');
-  const portrait = document.querySelector('[data-hero-parallax]');
+  const card = document.querySelector('[data-hero-card]');
+  const foot = document.querySelector('.hero-foot');
+  const dot = document.querySelector('.hero__dot');
 
   if (reducedMotion) {
-    gsap.set([headline, ...fades, portrait].filter(Boolean), {
+    gsap.set([headline, card, foot, dot].filter(Boolean), {
       opacity: 1,
       y: 0,
       scale: 1,
@@ -24,19 +25,25 @@ export function revealHero(reducedMotion) {
   const tl = gsap.timeline({ delay: 0.15 });
 
   if (headline) {
-    gsap.set(headline, { opacity: 0, y: 40, clipPath: 'inset(0 0 100% 0)' });
+    gsap.set(headline, { opacity: 0, y: 34, clipPath: 'inset(0 0 100% 0)' });
     tl.to(
       headline,
       { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 1.3, ease: 'power4.out' },
       0
     );
   }
-  if (portrait) {
-    gsap.set(portrait, { opacity: 0, scale: 1.08 });
-    tl.to(portrait, { opacity: 1, scale: 1, duration: 1.4, ease: 'power3.out' }, 0.25);
+  if (card) {
+    gsap.set(card, { opacity: 0, y: 24, scale: 0.97 });
+    tl.to(card, { opacity: 1, y: 0, scale: 1, duration: 1.1, ease: 'power3.out' }, 0.45);
   }
-  gsap.set(fades, { y: 26, opacity: 0 });
-  tl.to(fades, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', stagger: 0.09 }, 0.4);
+  if (dot) {
+    gsap.set(dot, { opacity: 0, scale: 0 });
+    tl.to(dot, { opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(2)' }, 0.7);
+  }
+  if (foot) {
+    gsap.set(foot, { opacity: 0, y: 16 });
+    tl.to(foot, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, 0.6);
+  }
 }
 
 /**
@@ -113,21 +120,6 @@ export function initReveals(reducedMotion) {
         }),
     });
   });
-
-  // ---- hero portrait parallax (scrolls faster than the rest of the page) ----
-  const portrait = document.querySelector('[data-hero-parallax]');
-  if (portrait && window.matchMedia('(min-width: 861px)').matches) {
-    gsap.to(portrait, {
-      yPercent: -26,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-      },
-    });
-  }
 
   // ---- parallax layers ----
   gsap.utils.toArray('[data-parallax]').forEach((el) => {

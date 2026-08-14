@@ -42,7 +42,7 @@ export default class HeroScene {
       powerPreference: 'high-performance',
       alpha: false,
     });
-    this.renderer.setClearColor(0x0a0c14, 1);
+    this.renderer.setClearColor(0x241009, 1);
     this.dpr = Math.min(window.devicePixelRatio || 1, 2);
     this.renderer.setPixelRatio(this.dpr);
 

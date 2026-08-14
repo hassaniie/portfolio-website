@@ -38,23 +38,35 @@
       <div class="cursor__ring" id="cursor-ring"><span class="cursor__label" id="cursor-label"></span></div>
     </div>
 
-    <!-- ============ WEBGL HERO CANVAS (fixed background) ============ -->
-    <canvas class="webgl" id="webgl" aria-hidden="true"></canvas>
     <div class="grain" aria-hidden="true"></div>
 
     <!-- ============ NAV ============ -->
     <header class="nav" id="nav">
-      <a class="nav__brand" href="#top" data-cursor="home">
-        <span class="nav__name">Hassan Mushtaq</span>
-        <span class="nav__role">Digital Product Designer</span>
-      </a>
-      <nav class="nav__links" aria-label="Primary">
-        <a href="#top" class="is-active" data-cursor>Home</a>
-        <a href="#work" data-cursor>Work</a>
-        <a href="#capabilities" data-cursor>Personal</a>
-        <a href="#contact" data-cursor>Resume</a>
-        <a href="#contact" class="nav__cta" data-cursor="mail">Get in touch</a>
-      </nav>
+      <div class="nav__left">
+        <a class="nav__logo" href="#top" data-cursor="home" aria-label="Hassan Mushtaq — home">
+          <span class="mark mark--fill">H</span>
+          <span class="mark">M</span>
+        </a>
+        <a class="nav__works" href="#work" data-cursor>Works</a>
+      </div>
+
+      <div class="nav__clock" role="timer" aria-label="Local time in Lahore">
+        <span class="clock__city">Lahore, Pakistan</span>
+        <span class="clock__time">
+          <span class="clock__box" id="clk-h">00</span>
+          <span class="clock__box" id="clk-m">00</span>
+          <span class="clock__mer"><span id="clk-mer">AM</span> (GMT+5)</span>
+        </span>
+      </div>
+
+      <div class="nav__right">
+        <a href="#contact" class="nav__contact" data-cursor="mail">Contact me</a>
+        <a href="#contact" class="nav__avatar" data-cursor aria-label="Contact Hassan">
+          <img src="./avatar.jpg" alt="Hassan Mushtaq"
+            onerror="this.onerror=null;this.src='./avatar.svg'" width="40" height="40" />
+        </a>
+      </div>
+
       <button class="nav__toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span>
       </button>
@@ -63,49 +75,53 @@
     <!-- mobile menu -->
     <div class="menu" id="menu" aria-hidden="true">
       <nav class="menu__links" aria-label="Mobile">
-        <a href="#top">Home</a>
-        <a href="#work">Work</a>
-        <a href="#capabilities">Personal</a>
-        <a href="#contact">Resume</a>
-        <a href="#contact">Get in touch</a>
+        <a href="#work">Works</a>
+        <a href="#about">About</a>
+        <a href="#capabilities">Studio</a>
+        <a href="#contact">Contact</a>
       </nav>
     </div>
 
     <main id="top">
-      <!-- ============ HERO ============ -->
+      <!-- ============ HERO (warm landing) ============ -->
       <section class="hero" id="hero">
+        <canvas class="webgl" id="webgl" aria-hidden="true"></canvas>
+        <div class="hero__arc" aria-hidden="true"></div>
+        <span class="hero__dot" aria-hidden="true"></span>
+
         <h1 class="hero__headline" data-hero-headline>
-          Designer based in
-          <a class="hero__accent" href="#about" data-cursor>Lahore</a>.
-          Shaping digital products, websites and design systems with clarity and
-          character.
+          Making complex interface design for companies and brands that move
+          forward
         </h1>
 
-        <div class="hero__foot">
-          <dl class="hero__meta">
-            <div class="hero__meta-item" data-reveal>
-              <dt>Based</dt>
-              <dd>Lahore, Pakistan</dd>
-            </div>
-            <div class="hero__meta-item" data-reveal>
-              <dt>Focus / Expertise</dt>
-              <dd>Product UX/UI, Design Systems</dd>
-            </div>
-            <div class="hero__meta-item" data-reveal>
-              <dt>Language</dt>
-              <dd>English, Urdu</dd>
-            </div>
-            <div class="hero__meta-item" data-reveal>
-              <dt>Open for</dt>
-              <dd>Full time, Remote, Freelance</dd>
-            </div>
-          </dl>
+        <article class="card" data-hero-card>
+          <span class="card__tab card__tab--left" aria-hidden="true">H</span>
+          <span class="card__tab card__tab--right" aria-hidden="true">M</span>
+          <div class="card__avatar">
+            <img src="./avatar.jpg" alt="Hassan Mushtaq"
+              onerror="this.onerror=null;this.src='./avatar.svg'" width="112" height="112" />
+          </div>
+          <div class="card__body">
+            <span class="card__status">Available for work <span class="card__pulse"></span></span>
+            <span class="card__name">Hassan Mushtaq</span>
+            <span class="card__role">Digital Product Designer</span>
+          </div>
+        </article>
 
-          <figure class="hero__portrait" data-hero-parallax>
-            <img src="./portrait.svg" alt="Portrait of Hassan Mushtaq"
-              width="520" height="620" />
-          </figure>
-        </div>
+        <footer class="hero-foot">
+          <nav class="hero-foot__social" aria-label="Social links">
+            <a href="#" data-cursor>LinkedIn</a>
+            <a href="#" data-cursor>Behance</a>
+            <a href="#" data-cursor>Dribbble</a>
+            <a href="#" data-cursor>Telegram</a>
+          </nav>
+          <a class="hero-foot__mail" href="mailto:hello@hassan.design" data-cursor="mail" data-magnetic>
+            hello@hassan.design
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+              <path d="M6 18L18 6M18 6H9M18 6v9" fill="none" stroke="currentColor" stroke-width="1.7" />
+            </svg>
+          </a>
+        </footer>
       </section>
 
       <!-- ============ ABOUT ============ -->
