@@ -1,15 +1,9 @@
 import { gsap } from 'gsap';
 
-const LABELS = {
-  view: 'View',
-  mail: 'Say hi',
-  scroll: 'Scroll',
-  home: 'Top',
-};
-
 /**
- * Blend-mode custom cursor: a dot that tracks precisely and a ring that
- * trails and grows over interactive targets. Fine-pointer devices only.
+ * Minimal custom cursor: a single 8px dot in the primary colour that tracks
+ * the pointer precisely and nudges larger over interactive targets.
+ * Fine-pointer devices only.
  */
 export function initCursor() {
   const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -17,41 +11,27 @@ export function initCursor() {
 
   const cursor = document.getElementById('cursor');
   const dot = document.getElementById('cursor-dot');
-  const ring = document.getElementById('cursor-ring');
-  const label = document.getElementById('cursor-label');
-  if (!cursor) return;
+  if (!cursor || !dot) return;
 
   document.body.classList.add('has-cursor');
 
-  const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-  const ringPos = { x: mouse.x, y: mouse.y };
+  // gsap owns the transform; keep it centred on the pointer via xPercent/yPercent
+  gsap.set(dot, { xPercent: -50, yPercent: -50 });
 
   window.addEventListener(
     'pointermove',
-    (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-      gsap.set(dot, { x: mouse.x, y: mouse.y });
-    },
+    (e) => gsap.set(dot, { x: e.clientX, y: e.clientY }),
     { passive: true }
   );
 
-  gsap.ticker.add(() => {
-    ringPos.x += (mouse.x - ringPos.x) * 0.18;
-    ringPos.y += (mouse.y - ringPos.y) * 0.18;
-    gsap.set(ring, { x: ringPos.x, y: ringPos.y });
-  });
-
-  // hover targets
   document.querySelectorAll('[data-cursor], a, button').forEach((el) => {
-    const key = el.getAttribute('data-cursor');
     el.addEventListener('pointerenter', () => {
       cursor.classList.add('is-hover');
-      label.textContent = key && LABELS[key] ? LABELS[key] : '';
+      gsap.to(dot, { scale: 1.7, duration: 0.25, ease: 'power3.out' });
     });
     el.addEventListener('pointerleave', () => {
       cursor.classList.remove('is-hover');
-      label.textContent = '';
+      gsap.to(dot, { scale: 1, duration: 0.25, ease: 'power3.out' });
     });
   });
 

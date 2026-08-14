@@ -3,7 +3,7 @@
    ============================================================ */
 @import '@fontsource-variable/newsreader/standard.css';
 @import '@fontsource-variable/newsreader/standard-italic.css';
-@import '@fontsource-variable/instrument-sans/standard.css';
+@import '@fontsource-variable/geist/index.css';
 @import '@fontsource-variable/geist-mono/index.css';
 
 :root {
@@ -25,7 +25,7 @@
   --hero-line: rgba(36, 17, 9, 0.16);
 
   /* type */
-  --sans: 'Instrument Sans Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --sans: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --serif: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
   --mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
@@ -37,7 +37,7 @@
   --step-3: clamp(2.6rem, 1.8rem + 4vw, 5rem);
   --step-mega: clamp(3rem, 0.5rem + 11vw, 11rem);
 
-  --gutter: clamp(1.25rem, 1rem + 3vw, 4.5rem);
+  --gutter: clamp(1.1rem, 0.85rem + 0.8vw, 1.9rem);
   --ease: cubic-bezier(0.62, 0.05, 0.01, 0.99);
 
   --radius: 4px;
@@ -61,8 +61,8 @@ body {
   font-family: var(--sans);
   font-weight: 400;
   font-size: var(--step-0);
-  line-height: 1.5;
-  letter-spacing: 0.01em;
+  line-height: 1.45;
+  letter-spacing: -0.011em;
   /* Newsreader's optical-size axis — 16pt per the type spec. Inherited by all;
      Instrument Sans has no opsz axis so it simply ignores this. */
   font-variation-settings: 'opsz' 16;

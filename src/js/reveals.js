@@ -121,6 +121,26 @@ export function initReveals(reducedMotion) {
     });
   });
 
+  // ---- card initials tuck behind the card as the hero scrolls ----
+  if (window.matchMedia('(min-width: 861px)').matches) {
+    const tabL = document.querySelector('[data-tab-left]');
+    const tabR = document.querySelector('[data-tab-right]');
+    if (tabL) {
+      gsap.to(tabL, {
+        x: 52,
+        ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+      });
+    }
+    if (tabR) {
+      gsap.to(tabR, {
+        x: -52,
+        ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+      });
+    }
+  }
+
   // ---- parallax layers ----
   gsap.utils.toArray('[data-parallax]').forEach((el) => {
     const speed = parseFloat(el.dataset.parallax) || 0.15;

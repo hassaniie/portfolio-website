@@ -47,7 +47,7 @@
           <span class="mark mark--fill">H</span>
           <span class="mark">M</span>
         </a>
-        <a class="nav__works" href="#work" data-cursor>Works</a>
+        <a class="nav__works swap" href="#work" data-cursor><span data-label="Works"><i>Works</i></span></a>
       </div>
 
       <div class="nav__clock" role="timer" aria-label="Local time in Lahore">
@@ -60,7 +60,7 @@
       </div>
 
       <div class="nav__right">
-        <a href="#contact" class="nav__contact" data-cursor="mail">Contact me</a>
+        <a href="#contact" class="nav__contact swap" data-cursor="mail"><span data-label="Contact me"><i>Contact me</i></span></a>
         <a href="#contact" class="nav__avatar" data-cursor aria-label="Contact Hassan">
           <img src="./avatar.jpg" alt="Hassan Mushtaq"
             onerror="this.onerror=null;this.src='./avatar.svg'" width="40" height="40" />
@@ -95,31 +95,33 @@
         </h1>
 
         <article class="card" data-hero-card>
-          <span class="card__tab card__tab--left" aria-hidden="true">H</span>
-          <span class="card__tab card__tab--right" aria-hidden="true">M</span>
-          <div class="card__avatar">
-            <img src="./avatar.jpg" alt="Hassan Mushtaq"
-              onerror="this.onerror=null;this.src='./avatar.svg'" width="112" height="112" />
-          </div>
-          <div class="card__body">
-            <span class="card__status">Available for work <span class="card__pulse"></span></span>
-            <span class="card__name">Hassan Mushtaq</span>
-            <span class="card__role">Digital Product Designer</span>
+          <span class="card__tab card__tab--left" data-tab-left aria-hidden="true">H</span>
+          <span class="card__tab card__tab--right" data-tab-right aria-hidden="true">M</span>
+          <div class="card__surface">
+            <div class="card__avatar">
+              <img src="./avatar.jpg" alt="Hassan Mushtaq"
+                onerror="this.onerror=null;this.src='./avatar.svg'" width="112" height="112" />
+            </div>
+            <div class="card__body">
+              <span class="card__status">Available for work <span class="card__pulse"></span></span>
+              <span class="card__name">Hassan Mushtaq</span>
+              <span class="card__role">Digital Product Designer</span>
+            </div>
           </div>
         </article>
 
         <footer class="hero-foot">
           <nav class="hero-foot__social" aria-label="Social links">
-            <a href="#" data-cursor>LinkedIn</a>
-            <a href="#" data-cursor>Behance</a>
-            <a href="#" data-cursor>Dribbble</a>
-            <a href="#" data-cursor>Telegram</a>
+            <a href="#" class="swap" data-cursor><span data-label="LinkedIn"><i>LinkedIn</i></span></a>
+            <a href="#" class="swap" data-cursor><span data-label="Behance"><i>Behance</i></span></a>
+            <a href="#" class="swap" data-cursor><span data-label="Dribbble"><i>Dribbble</i></span></a>
+            <a href="#" class="swap" data-cursor><span data-label="Telegram"><i>Telegram</i></span></a>
           </nav>
-          <a class="hero-foot__mail" href="mailto:hello@hassan.design" data-cursor="mail" data-magnetic>
-            hello@hassan.design
-            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
-              <path d="M6 18L18 6M18 6H9M18 6v9" fill="none" stroke="currentColor" stroke-width="1.7" />
-            </svg>
+          <a class="hero-foot__mail swap-trigger" href="mailto:hello@hassan.design" data-cursor="mail">
+            <span class="swap"><span data-label="hello@hassan.design"><i>hello@hassan.design</i></span></span>
+            <span class="play-btn" aria-hidden="true">
+              <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor" /></svg>
+            </span>
           </a>
         </footer>
       </section>
