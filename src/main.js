@@ -7,7 +7,7 @@ import { initSmoothScroll } from './js/smoothScroll.js';
 import { initReveals, revealHero } from './js/reveals.js';
 import { initCursor } from './js/cursor.js';
 import { initNav, initClock } from './js/nav.js';
-import { initWork } from './js/work.js';
+import { initCases } from './js/cases.js';
 import { runPreloader } from './js/preloader.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -20,8 +20,11 @@ try {
 } catch (err) {
   console.warn('WebGL unavailable — using static fallback.', err);
   canvas.style.display = 'none';
-  document.body.style.background =
-    'radial-gradient(120% 80% at 30% 20%, #14121a 0%, #0a0a0b 60%)';
+  const heroEl = document.querySelector('.hero');
+  if (heroEl) {
+    heroEl.style.background =
+      'linear-gradient(180deg, #241009 0%, #ff6a2c 54%, #ffffff 100%)';
+  }
 }
 
 /* ---------- immediate, non-visual init ---------- */
@@ -47,7 +50,7 @@ async function boot() {
     .catch(() => {})
     .then(() => {
       initReveals(reducedMotion);
-      initWork(reducedMotion);
+      initCases(reducedMotion);
       ScrollTrigger.refresh();
     });
 

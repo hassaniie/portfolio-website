@@ -19,11 +19,11 @@ void main() {
   float asp = uResolution.x / uResolution.y;
   float t = uTime * 0.25;
 
-  // warm vertical gradient: dark top -> orange middle -> cream bottom
-  vec3 cream = vec3(0.960, 0.910, 0.870);
+  // warm vertical gradient: dark top -> orange middle -> pure white bottom
+  vec3 white = vec3(1.0, 1.0, 1.0);
   vec3 orange = vec3(1.000, 0.420, 0.160);
   vec3 dark = vec3(0.140, 0.060, 0.035);
-  vec3 col = mix(cream, orange, smoothstep(0.0, 0.52, uv.y));
+  vec3 col = mix(white, orange, smoothstep(0.0, 0.54, uv.y));
   col = mix(col, dark, smoothstep(0.56, 1.0, uv.y));
 
   // soft breathing radial glow around the upper-middle
