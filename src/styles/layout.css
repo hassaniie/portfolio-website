@@ -161,7 +161,8 @@
   overflow: hidden;
   vertical-align: top;
   line-height: 1.2;
-  color: var(--link-txt, #000); /* stays black / white — never recolours */
+  color: var(--link-txt, #000); /* black on light / white on dark → orange on hover */
+  transition: color 0.4s var(--ease);
   white-space: nowrap;
 }
 .swap > span::before {
@@ -203,6 +204,8 @@
 }
 .swap:hover::before,
 .swap-trigger:hover .swap::before { transform: scaleX(1); }
+.swap:hover > span,
+.swap-trigger:hover .swap > span { color: var(--warm); } /* text → primary orange on hover */
 .swap:hover > span::before,
 .swap-trigger:hover .swap > span::before { transform: translateY(0); }
 .swap:hover > span > i,
