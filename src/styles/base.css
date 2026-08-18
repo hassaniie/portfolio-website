@@ -121,6 +121,25 @@ button {
   border: none;
 }
 
+/* Apple-like corner smoothing on rounded surfaces (progressive enhancement;
+   degrades to normal rounded corners where corner-shape is unsupported).
+   Radii themselves are kept to multiples of 4 for a sharp-yet-smooth look. */
+.mark,
+.clock__box,
+.nav__avatar,
+.card__surface,
+.card__tab,
+.card__avatar,
+.play-btn,
+.viz,
+.metrics,
+.chip,
+.mock,
+.mock__frame,
+.project__media {
+  corner-shape: squircle;
+}
+
 /* film grain overlay */
 .grain {
   position: fixed;

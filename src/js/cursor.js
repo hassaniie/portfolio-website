@@ -13,26 +13,37 @@ export function initCursor() {
   const dot = document.getElementById('cursor-dot');
   if (!cursor || !dot) return;
 
+  const trail = document.getElementById('cursor-ring');
   document.body.classList.add('has-cursor');
 
-  // gsap owns the transform; keep it centred on the pointer via xPercent/yPercent
-  gsap.set(dot, { xPercent: -50, yPercent: -50 });
+  // gsap owns the transform; keep both centred on the pointer
+  gsap.set([dot, trail].filter(Boolean), { xPercent: -50, yPercent: -50 });
+
+  const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  const lag = { x: mouse.x, y: mouse.y };
 
   window.addEventListener(
     'pointermove',
-    (e) => gsap.set(dot, { x: e.clientX, y: e.clientY }),
+    (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      gsap.set(dot, { x: mouse.x, y: mouse.y });
+    },
     { passive: true }
   );
 
+  // the trailing mark eases toward the pointer, lagging behind the dot
+  if (trail) {
+    gsap.ticker.add(() => {
+      lag.x += (mouse.x - lag.x) * 0.16;
+      lag.y += (mouse.y - lag.y) * 0.16;
+      gsap.set(trail, { x: lag.x, y: lag.y });
+    });
+  }
+
   document.querySelectorAll('[data-cursor], a, button').forEach((el) => {
-    el.addEventListener('pointerenter', () => {
-      cursor.classList.add('is-hover');
-      gsap.to(dot, { scale: 1.7, duration: 0.25, ease: 'power3.out' });
-    });
-    el.addEventListener('pointerleave', () => {
-      cursor.classList.remove('is-hover');
-      gsap.to(dot, { scale: 1, duration: 0.25, ease: 'power3.out' });
-    });
+    el.addEventListener('pointerenter', () => cursor.classList.add('is-hover'));
+    el.addEventListener('pointerleave', () => cursor.classList.remove('is-hover'));
   });
 
   initMagnetic();
