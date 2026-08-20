@@ -4,8 +4,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Selected Work / Impact: masked heading reveals and a gentle vertical parallax
- * on each project's device mockup as it scrolls through the viewport.
+ * Selected Work / Impact — scroll motion (GSAP + ScrollTrigger over Lenis):
+ * masked heading reveals, the signal wave drawing itself in, and a layered
+ * parallax + subtle 3D tilt on each project's device mockup.
  */
 export function initCases(reducedMotion) {
   const section = document.querySelector('.cases');
@@ -36,15 +37,32 @@ export function initCases(reducedMotion) {
     });
   });
 
-  // parallax the device mockup within each full-height project
+  // the signal wave draws itself in (energy continued from the hero)
+  const wavePath = section.querySelector('.wave-rule path');
+  if (wavePath && wavePath.getTotalLength) {
+    const len = wavePath.getTotalLength();
+    gsap.set(wavePath, { strokeDasharray: len, strokeDashoffset: len });
+    ScrollTrigger.create({
+      trigger: '.wave-rule',
+      start: 'top 92%',
+      once: true,
+      onEnter: () =>
+        gsap.to(wavePath, { strokeDashoffset: 0, duration: 1.7, ease: 'power2.out' }),
+    });
+  }
+
+  // per-project: parallax + subtle 3D tilt on the device mockup
   gsap.utils.toArray('.project').forEach((project) => {
     const frame = project.querySelector('.mock__frame');
     if (!frame) return;
+    const flip = project.hasAttribute('data-flip');
     gsap.fromTo(
       frame,
-      { yPercent: 8 },
+      { yPercent: 11, rotateY: flip ? -5 : 5, scale: 0.97 },
       {
-        yPercent: -8,
+        yPercent: -11,
+        rotateY: flip ? 5 : -5,
+        scale: 1,
         ease: 'none',
         scrollTrigger: { trigger: project, start: 'top bottom', end: 'bottom top', scrub: true },
       }

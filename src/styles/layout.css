@@ -605,7 +605,9 @@
 .project__media {
   position: relative;
   overflow: hidden;
+  perspective: 1400px;
 }
+.mock__frame { transform-style: preserve-3d; will-change: transform; }
 .project__info {
   display: flex;
   flex-direction: column;
