@@ -95,7 +95,8 @@ Tight gap between text and underline.
 ring/border.** Fine-pointer only.
 
 ### Chips / tags (LOCKED)
-Geist Mono, UPPERCASE, 11px, light-gray fill, hairline border, radius 8 + squircle.
+Geist Mono, UPPERCASE, 11px, light-gray fill, **no border stroke at all**, radius 8
++ squircle. Clean and minimal — no outline, no clutter.
 
 ### Nav (LOCKED)
 Boxed H/M monogram + `Works` (left) · live **Lahore** clock w/ digit boxes (center)
@@ -107,7 +108,21 @@ work` + pulse; H/M initials at the outer edges that slide **behind** the card on
 
 ### Project media (EXPLORE within constraints)
 Light glossy device-mockup **placeholders** until real screenshots are supplied.
-Real screenshots replace them in the same full-height media column.
+Real screenshots replace them in the same inset media frame.
+
+### Projects section (LOCKED — matches the supplied reference)
+**Header:** oversized orange Newsreader-300 `Projects` with a mono superscript count
+`(4)`; mono orange `( 2023 — 2025 )` pushed to the far right; a small circled `©`
+mark at the very end; an orange dot below; then a full-width hairline.
+
+**Row:** `image left · info right`, **always** — never alternating.
+- The thumbnail **never touches the page edges**: it sits inset inside its own
+  rounded frame (radius 16 + squircle) with the row's padding on every side.
+- Info column is three zones: **title top-left** with the year mono-orange pushed to
+  the **far right of the row** · **description + tags indented to the column's
+  horizontal centre**, vertically centred · **CTAs bottom-left**.
+- A **hairline divider separates every project** from the next.
+- No per-project `01 / 04` index — the count lives in the header.
 
 ---
 
@@ -116,7 +131,7 @@ Real screenshots replace them in the same full-height media column.
 | Section | Layout status | Motion status |
 | --- | --- | --- |
 | Hero | LOCKED (warm gradient landing) | WebGL shader ✓ · can go further |
-| Selected Work / Impact | LOCKED (full-height alternating splits, chips, dual CTAs) | **needs the pillars** (pin/parallax/WebGL transitions) |
+| Projects | LOCKED (image-left inset rows, hairline dividers, 3-zone info column) | scrubbed mockup parallax + tilt ✓ · copy-column lag ✓ · rule draw-in ✓ · **WebGL transition between projects still to come** |
 | About / next sections | not built | — |
 
 Content (names, descriptions, tags, links, `hello@hassan.design`) is placeholder and

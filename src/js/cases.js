@@ -4,9 +4,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Selected Work / Impact — scroll motion (GSAP + ScrollTrigger over Lenis):
- * masked heading reveals, the signal wave drawing itself in, and a layered
- * parallax + subtle 3D tilt on each project's device mockup.
+ * Projects — scroll motion (GSAP + ScrollTrigger over Lenis): masked heading
+ * reveals, the section rule drawing itself out, and a layered parallax +
+ * subtle 3D tilt on each project's device mockup inside its inset frame.
  */
 export function initCases(reducedMotion) {
   const section = document.querySelector('.cases');
@@ -37,35 +37,47 @@ export function initCases(reducedMotion) {
     });
   });
 
-  // the signal wave draws itself in (energy continued from the hero)
-  const wavePath = section.querySelector('.wave-rule path');
-  if (wavePath && wavePath.getTotalLength) {
-    const len = wavePath.getTotalLength();
-    gsap.set(wavePath, { strokeDasharray: len, strokeDashoffset: len });
+  // the section rule draws itself out from the left as the header lands
+  const rule = section.querySelector('.cases__rule');
+  if (rule) {
+    gsap.set(rule, { scaleX: 0, transformOrigin: 'left center' });
     ScrollTrigger.create({
-      trigger: '.wave-rule',
-      start: 'top 92%',
+      trigger: rule,
+      start: 'top 95%',
       once: true,
-      onEnter: () =>
-        gsap.to(wavePath, { strokeDashoffset: 0, duration: 1.7, ease: 'power2.out' }),
+      onEnter: () => gsap.to(rule, { scaleX: 1, duration: 1.4, ease: 'power3.out' }),
     });
   }
 
-  // per-project: parallax + subtle 3D tilt on the device mockup
+  // per-project: parallax + subtle 3D tilt on the device mockup inside its
+  // inset frame — the image drifts against the copy as the row passes through
   gsap.utils.toArray('.project').forEach((project) => {
     const frame = project.querySelector('.mock__frame');
     if (!frame) return;
-    const flip = project.hasAttribute('data-flip');
     gsap.fromTo(
       frame,
-      { yPercent: 11, rotateY: flip ? -5 : 5, scale: 0.97 },
+      { yPercent: 9, rotateY: 5, scale: 0.96 },
       {
-        yPercent: -11,
-        rotateY: flip ? 5 : -5,
+        yPercent: -9,
+        rotateY: -5,
         scale: 1,
         ease: 'none',
         scrollTrigger: { trigger: project, start: 'top bottom', end: 'bottom top', scrub: true },
       }
     );
+
+    // the copy column lags the image slightly — layered depth, not a fade-in
+    const mid = project.querySelector('.project__mid');
+    if (mid) {
+      gsap.fromTo(
+        mid,
+        { yPercent: 14 },
+        {
+          yPercent: -14,
+          ease: 'none',
+          scrollTrigger: { trigger: project, start: 'top bottom', end: 'bottom top', scrub: true },
+        }
+      );
+    }
   });
 }
