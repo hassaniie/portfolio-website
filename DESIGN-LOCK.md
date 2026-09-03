@@ -74,6 +74,8 @@ on section transitions (hero → work is intentionally airy).
 ## 3 · Locked components
 
 ### Primary button (LOCKED) — `.btn-play`
+Text is **Geist Mono** (`--mono`), 13px — never the sans. UPPERCASE in the projects
+section, per the reference.
 Underlined mono label + a play box on the right.
 - **Default:** text **pure black** (Geist Mono) on light / **white** on dark;
   **light-gray underline** full width; **dark (near-black) play box** on the right
@@ -111,9 +113,10 @@ Light glossy device-mockup **placeholders** until real screenshots are supplied.
 Real screenshots replace them in the same inset media frame.
 
 ### Projects section (LOCKED — matches the supplied reference)
-**Header:** oversized orange Newsreader-300 `Projects` with a mono superscript count
-`(4)`; mono orange `( 2023 — 2025 )` pushed to the far right; a small circled `©`
-mark at the very end; an orange dot below; then a full-width hairline.
+**Header:** oversized orange Newsreader-300 `Projects`; mono orange count `(4)` off
+the word's shoulder, aligned to the title's cap top; mono orange `( 2023 — 2025 )`
+pushed right; a **large thin-stroke circled ©** (≈5.6rem) at the very end; a
+**centred** orange dot below; then the rule.
 
 **Row:** `image left · info right`, **always** — never alternating.
 - The thumbnail **never touches the page edges**: it sits inset inside its own
@@ -121,7 +124,14 @@ mark at the very end; an orange dot below; then a full-width hairline.
 - Info column is three zones: **title top-left** with the year mono-orange pushed to
   the **far right of the row** · **description + tags indented to the column's
   horizontal centre**, vertically centred · **CTAs bottom-left**.
-- A **hairline divider separates every project** from the next.
+- A **hairline divider separates every project** from the next. Every rule in this
+  section — the header rule included — **keeps the page's side margins**
+  (`left/right: var(--gutter)`), never edge to edge.
+- Spacing is **tight and deliberate**: ~32px from the image bottom to the divider,
+  ~33px from the divider to the next row. Subtle, clean, minimal.
+- The thumbnail is **full-height** (≈100svh) — inset, not shortened.
+- The description sits a **fixed distance below the title** (never vertically
+  centred) and is indented **26%** into the column; CTAs are pinned to the bottom.
 - No per-project `01 / 04` index — the count lives in the header.
 
 ---
