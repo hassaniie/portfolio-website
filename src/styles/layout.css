@@ -296,6 +296,11 @@
   font-family: var(--serif);
   font-size: clamp(2.5rem, 1rem + 8vw, 4rem);
   line-height: 1.1;
+  /* .menu sits on the dark --bg overlay but inherits body's light-theme
+     --ink-900 text color with nothing to override it — near-invisible
+     without this. --ink is the light tone already paired with --bg
+     elsewhere (see .preloader). */
+  color: var(--ink);
 }
 
 /* ---------- HERO (warm, centered landing) ---------- */
