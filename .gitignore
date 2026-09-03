@@ -4,3 +4,7 @@ dist
 *.local
 .vite
 npm-debug.log*
+
+# seeded design-canvas payload (regenerated from design/*.dc.html + canvas.json)
+design/*.html
+!design/*.dc.html

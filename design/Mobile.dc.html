@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&family=Geist:wght@300..500&family=Geist+Mono:wght@400..500&display=swap">
+<style>
+:root{
+  --paper:#ffffff; --ink-900:#17130e; --hair:rgba(23,19,14,.12);
+  --warm:#ff6a2c; --warm-deep:#d24a12; --hero-ink:#241109; --hero-ink-soft:rgba(36,17,9,.62);
+  --sans:'Geist Variable',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --serif:'Newsreader Variable',Georgia,'Times New Roman',serif;
+  --mono:'Geist Mono Variable',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --gutter:clamp(1.1rem,.85rem + .8vw,1.9rem);
+  --ease:cubic-bezier(.62,.05,.01,.99);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{background:var(--paper);color:var(--ink-900);font-family:var(--sans);font-weight:400;
+  font-size:clamp(.95rem,.9rem + .3vw,1.1rem);line-height:1.45;letter-spacing:-.011em;
+  font-variation-settings:'opsz' 16;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+img,svg{display:block;max-width:100%;}
+button{font:inherit;color:inherit;background:none;border:none;}
+.mark,.nav__avatar,.card__surface,.card__tab,.card__avatar,.play-btn{corner-shape:squircle;}
+
+.nav{position:fixed;top:0;left:0;width:100%;z-index:60;display:flex;align-items:center;
+  justify-content:space-between;padding:clamp(.85rem,.6rem + .9vw,1.3rem) var(--gutter);
+  color:#f6ece4;font-family:var(--mono);text-transform:uppercase;font-size:12px;letter-spacing:-.02em;}
+.nav__left,.nav__right{display:flex;align-items:center;gap:1rem;}
+.nav__logo{display:flex;gap:.35rem;}
+.mark{width:1.9rem;height:1.9rem;display:grid;place-items:center;border:1px solid currentColor;
+  border-radius:8px;font-size:.8rem;line-height:1;}
+.mark--fill{background:#f6ece4;color:#241109;border-color:#f6ece4;}
+.nav__avatar{width:2.3rem;height:2.3rem;border-radius:8px;overflow:hidden;
+  border:1px solid rgba(246,236,228,.28);flex:0 0 auto;}
+.nav__avatar svg{width:100%;height:100%;}
+
+/* working hamburger -> X, and the overlay menu it drives */
+.nav__toggle{display:flex;flex-direction:column;gap:6px;width:30px;}
+.nav__toggle span{height:1.5px;width:100%;background:currentColor;
+  transition:transform .4s var(--ease),opacity .3s;}
+.nav.menu-open .nav__toggle span:first-child{transform:translateY(3.75px) rotate(45deg);}
+.nav.menu-open .nav__toggle span:last-child{transform:translateY(-3.75px) rotate(-45deg);}
+.menu{position:fixed;inset:0;z-index:55;background:#0a0c14;display:grid;place-items:center;
+  clip-path:inset(0 0 100% 0);transition:clip-path .7s var(--ease);pointer-events:none;}
+.menu.is-open{clip-path:inset(0 0 0 0);pointer-events:auto;}
+.menu__links{display:flex;flex-direction:column;gap:.5rem;text-align:center;}
+.menu__links a{font-family:var(--serif);font-weight:300;font-variation-settings:'opsz' 16;
+  font-size:clamp(2.5rem,1rem + 8vw,4rem);line-height:1.1;color:#f4f1ea;}
+
+.swap{position:relative;display:inline-block;vertical-align:top;padding-bottom:2px;}
+.swap>span{position:relative;display:inline-block;overflow:hidden;vertical-align:top;line-height:1.2;
+  color:#000;transition:color .4s var(--ease);white-space:nowrap;}
+.swap>span::before{content:attr(data-label);position:absolute;left:0;top:0;width:100%;
+  transform:translateY(-102%);transition:transform .5s var(--ease);}
+.swap>span>i{display:inline-block;font-style:inherit;transition:transform .5s var(--ease);}
+.swap::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:rgba(36,17,9,.24);}
+.swap::before{content:'';position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--warm);
+  transform:scaleX(0);transform-origin:left;transition:transform .55s var(--ease);}
+.swap:hover::before,.swap-trigger:hover .swap::before{transform:scaleX(1);}
+.swap:hover>span,.swap-trigger:hover .swap>span{color:var(--warm);}
+.swap:hover>span::before,.swap-trigger:hover .swap>span::before{transform:translateY(0);}
+.swap:hover>span>i,.swap-trigger:hover .swap>span>i{transform:translateY(102%);}
+
+.hero{position:relative;min-height:100svh;overflow:hidden;isolation:isolate;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:clamp(4.5rem,3.5rem + 3vw,6.5rem) var(--gutter) clamp(4rem,3rem + 3vw,6rem);
+  background:linear-gradient(180deg,#241009 0%,#ff6a2c 54%,#ffffff 100%);}
+.hero__headline{position:relative;z-index:2;font-family:var(--serif);font-weight:300;
+  font-variation-settings:'opsz' 16;font-size:clamp(1.9rem,.6rem + 4.4vw,4.5rem);line-height:1.12;
+  letter-spacing:-.015em;max-width:20ch;color:#fff;text-wrap:balance;}
+
+.card{position:relative;z-index:2;isolation:isolate;margin-top:clamp(2.2rem,1.7rem + 2.5vw,3.6rem);
+  width:100%;}
+.card__surface{position:relative;z-index:2;display:flex;align-items:center;gap:1.15rem;
+  padding:.95rem 1.5rem .95rem .95rem;border-radius:16px;background:rgba(255,247,241,.74);
+  border:1px solid rgba(36,17,9,.1);backdrop-filter:blur(18px) saturate(1.3);
+  -webkit-backdrop-filter:blur(18px) saturate(1.3);box-shadow:0 26px 72px -34px rgba(70,20,0,.5);
+  text-align:left;}
+.card__tab{position:absolute;top:50%;z-index:1;margin-top:-1rem;width:2rem;height:2rem;display:grid;
+  place-items:center;font-family:var(--mono);font-size:.74rem;letter-spacing:-.02em;color:#fff;
+  background:var(--warm);border-radius:8px;box-shadow:0 8px 20px -8px rgba(255,106,44,.9);}
+.card__tab--left{left:-1.55rem;}
+.card__tab--right{right:-1.55rem;}
+.card__avatar{width:4.1rem;height:4.1rem;flex:0 0 auto;border-radius:12px;overflow:hidden;
+  background:var(--warm);}
+.card__avatar svg{width:100%;height:100%;}
+.card__body{flex:1;display:flex;flex-direction:column;gap:.25rem;font-family:var(--mono);
+  text-transform:uppercase;}
+.card__status{align-self:flex-end;display:inline-flex;align-items:center;gap:.45rem;font-size:.62rem;
+  letter-spacing:.01em;color:var(--warm-deep);margin-bottom:.3rem;}
+.card__pulse{width:6px;height:6px;border-radius:50%;background:var(--warm);
+  animation:cardpulse 1.9s var(--ease) infinite;}
+@keyframes cardpulse{0%{box-shadow:0 0 0 0 rgba(255,106,44,.5);}70%{box-shadow:0 0 0 7px rgba(255,106,44,0);}100%{box-shadow:0 0 0 0 rgba(255,106,44,0);}}
+.card__name{font-size:.95rem;letter-spacing:-.01em;color:var(--hero-ink);}
+.card__role{font-size:.72rem;letter-spacing:0;color:var(--hero-ink-soft);}
+
+.hero-foot{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;
+  flex-direction:column;align-items:flex-start;gap:.8rem;padding:clamp(1rem,.8rem + .8vw,1.5rem) var(--gutter);
+  font-family:var(--mono);text-transform:uppercase;font-size:12px;letter-spacing:-.02em;
+  color:var(--hero-ink);}
+.hero-foot__social{display:flex;flex-wrap:wrap;gap:1rem;}
+.hero-foot__mail{display:inline-flex;align-items:center;gap:.5rem;}
+.play-btn{display:grid;place-items:center;width:24px;height:24px;border-radius:8px;
+  background:var(--hero-ink);color:#fff;flex:0 0 auto;
+  transition:transform .4s var(--ease),background .4s var(--ease);}
+.play-btn svg{width:9px;height:9px;}
+.hero-foot__mail:hover .play-btn{background:var(--warm);transform:translateX(2px);}
+</style>
+</helmet>
+
+<header class="nav{{navClass}}">
+  <div class="nav__left">
+    <a class="nav__logo" href="#top" aria-label="Hassan Mushtaq — home">
+      <span class="mark mark--fill">H</span>
+      <span class="mark">M</span>
+    </a>
+  </div>
+  <div class="nav__right">
+    <a href="#contact" class="nav__avatar" aria-label="Contact Hassan">
+      <svg viewBox="0 0 112 112" width="100%" height="100%">
+        <defs><radialGradient id="gA" cx="50%" cy="60%" r="75%">
+          <stop offset="0%" stop-color="#ff8a3d"/><stop offset="70%" stop-color="#f0530f"/><stop offset="100%" stop-color="#a72c00"/>
+        </radialGradient></defs>
+        <rect width="112" height="112" fill="url(#gA)"/>
+        <g fill="#2a0d00" opacity="0.22"><circle cx="56" cy="46" r="19"/><path d="M24 112c0-24 12-38 32-38s32 14 32 38Z"/></g>
+        <text x="50%" y="54%" text-anchor="middle" dy="0.34em" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="42" fill="#fff" fill-opacity="0.92">HM</text>
+      </svg>
+    </a>
+    <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="{{expanded}}" onClick="{{toggle}}">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="menu{{menuClass}}" aria-hidden="{{hidden}}">
+  <nav class="menu__links">
+    <a href="#work" onClick="{{close}}">Works</a>
+    <a href="#contact" onClick="{{close}}">Contact</a>
+  </nav>
+</div>
+
+<section class="hero" id="hero">
+  <h1 class="hero__headline">
+    Making complex interface design for companies and brands that move forward
+  </h1>
+
+  <article class="card">
+    <span class="card__tab card__tab--left" aria-hidden="true">H</span>
+    <span class="card__tab card__tab--right" aria-hidden="true">M</span>
+    <div class="card__surface">
+      <div class="card__avatar">
+        <svg viewBox="0 0 112 112" width="100%" height="100%">
+          <defs><radialGradient id="gB" cx="50%" cy="60%" r="75%">
+            <stop offset="0%" stop-color="#ff8a3d"/><stop offset="70%" stop-color="#f0530f"/><stop offset="100%" stop-color="#a72c00"/>
+          </radialGradient></defs>
+          <rect width="112" height="112" fill="url(#gB)"/>
+          <g fill="#2a0d00" opacity="0.22"><circle cx="56" cy="46" r="19"/><path d="M24 112c0-24 12-38 32-38s32 14 32 38Z"/></g>
+          <text x="50%" y="54%" text-anchor="middle" dy="0.34em" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="42" fill="#fff" fill-opacity="0.92">HM</text>
+        </svg>
+      </div>
+      <div class="card__body">
+        <span class="card__status">Available for work <span class="card__pulse"></span></span>
+        <span class="card__name">Hassan Mushtaq</span>
+        <span class="card__role">Digital Product Designer</span>
+      </div>
+    </div>
+  </article>
+
+  <footer class="hero-foot">
+    <nav class="hero-foot__social" aria-label="Social links">
+      <a href="#" class="swap"><span data-label="LinkedIn"><i>LinkedIn</i></span></a>
+      <a href="#" class="swap"><span data-label="Behance"><i>Behance</i></span></a>
+      <a href="#" class="swap"><span data-label="Dribbble"><i>Dribbble</i></span></a>
+      <a href="#" class="swap"><span data-label="Telegram"><i>Telegram</i></span></a>
+    </nav>
+    <a class="hero-foot__mail" href="mailto:hello@hassan.design">
+      <span class="swap"><span data-label="hello@hassan.design"><i>hello@hassan.design</i></span></span>
+      <span class="play-btn" aria-hidden="true">
+        <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor" /></svg>
+      </span>
+    </a>
+  </footer>
+</section>
+
+</x-dc>
+<script data-dc-script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { open: false };
+    this.toggle = () => this.setState({ open: !this.state.open });
+    this.close = () => this.setState({ open: false });
+  }
+  renderVals() {
+    const open = this.state?.open ?? false;
+    return {
+      navClass: open ? ' menu-open' : '',
+      menuClass: open ? ' is-open' : '',
+      expanded: open ? 'true' : 'false',
+      hidden: open ? 'false' : 'true',
+      toggle: this.toggle,
+      close: this.close,
+    };
+  }
+}
+</script>
+</body>
+</html>

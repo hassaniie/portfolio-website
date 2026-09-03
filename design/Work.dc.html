@@ -1,0 +1,323 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&family=Geist:wght@300..500&family=Geist+Mono:wght@400..500&display=swap">
+<style>
+:root{
+  --paper:#ffffff; --ink-900:#17130e; --ink-600:#625b52; --ink-400:#9b938a; --hair:rgba(23,19,14,.12);
+  --warm:#ff6a2c; --warm-deep:#d24a12; --hero-ink:#241109;
+  --sans:'Geist Variable',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --serif:'Newsreader Variable',Georgia,'Times New Roman',serif;
+  --mono:'Geist Mono Variable',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --gutter:clamp(1.1rem,.85rem + .8vw,1.9rem);
+  --ease:cubic-bezier(.62,.05,.01,.99);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--paper);color:var(--ink-900);font-family:var(--sans);font-weight:400;
+  font-size:clamp(.95rem,.9rem + .3vw,1.1rem);line-height:1.45;letter-spacing:-.011em;
+  font-variation-settings:'opsz' 16;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+em{font-style:italic;}
+.chip,.mock,.mock__frame{corner-shape:squircle;}
+
+.swap{position:relative;display:inline-block;vertical-align:top;padding-bottom:2px;}
+.swap>span{position:relative;display:inline-block;overflow:hidden;vertical-align:top;line-height:1.2;
+  color:#000;transition:color .4s var(--ease);white-space:nowrap;}
+.swap>span::before{content:attr(data-label);position:absolute;left:0;top:0;width:100%;
+  transform:translateY(-102%);transition:transform .5s var(--ease);}
+.swap>span>i{display:inline-block;font-style:inherit;transition:transform .5s var(--ease);}
+.swap::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--hair);}
+.swap::before{content:'';position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--warm);
+  transform:scaleX(0);transform-origin:left;transition:transform .55s var(--ease);}
+.swap:hover::before,.swap-trigger:hover .swap::before{transform:scaleX(1);}
+.swap:hover>span,.swap-trigger:hover .swap>span{color:var(--warm);}
+.swap:hover>span::before,.swap-trigger:hover .swap>span::before{transform:translateY(0);}
+.swap:hover>span>i,.swap-trigger:hover .swap>span>i{transform:translateY(102%);}
+.btn-play{display:inline-flex;align-items:center;gap:.5rem;}
+.play-btn{display:grid;place-items:center;width:24px;height:24px;border-radius:8px;
+  background:var(--hero-ink);color:#fff;flex:0 0 auto;
+  transition:transform .4s var(--ease),background .4s var(--ease);}
+.play-btn svg{width:9px;height:9px;}
+.btn-play:hover .play-btn{background:var(--warm);transform:translateX(2px);}
+
+.cases{position:relative;background:var(--paper);color:var(--ink-900);
+  padding-top:clamp(6rem,4rem + 8vw,13rem);overflow:clip;}
+.cases__intro{padding:0 var(--gutter);max-width:64rem;
+  margin-bottom:clamp(3.5rem,2.5rem + 5vw,7rem);text-align:left;}
+.eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-family:var(--mono);
+  text-transform:uppercase;font-size:12px;letter-spacing:-.01em;color:var(--ink-400);}
+.eyebrow__dot{width:6px;height:6px;border-radius:50%;background:var(--warm);
+  box-shadow:0 0 9px rgba(255,106,44,.75);}
+.cases__lede{margin-top:1.2rem;font-family:var(--serif);font-weight:300;
+  font-variation-settings:'opsz' 16;font-size:clamp(1.8rem,.9rem + 3.3vw,3.5rem);line-height:1.07;
+  letter-spacing:-.025em;max-width:20ch;}
+.cases__lede em{font-style:italic;color:var(--warm-deep);}
+.wave-rule{margin-top:clamp(1.6rem,1rem + 2vw,2.6rem);max-width:46rem;height:40px;}
+.wave-rule svg{width:100%;height:100%;display:block;overflow:visible;}
+
+.project{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;min-height:900px;}
+.project[data-flip] .project__media{order:2;}
+.project[data-flip] .project__info{order:1;}
+.project__media{position:relative;overflow:hidden;}
+.project__info{display:flex;flex-direction:column;justify-content:space-between;
+  gap:clamp(2rem,1.5rem + 2vw,3.5rem);padding:clamp(4rem,3rem + 4vw,7rem) var(--gutter);text-align:left;}
+.project__top{display:flex;flex-direction:column;gap:1rem;}
+.project__index{font-family:var(--mono);text-transform:uppercase;font-size:12px;
+  letter-spacing:-.01em;color:var(--ink-400);}
+.project__name{font-family:var(--serif);font-weight:300;font-variation-settings:'opsz' 16;
+  font-size:clamp(2.3rem,1.3rem + 3.6vw,4.6rem);line-height:1;letter-spacing:-.03em;color:var(--ink-900);}
+.project__year{color:var(--warm);font-size:.4em;vertical-align:middle;letter-spacing:-.01em;
+  margin-left:.35rem;}
+.project__mid{max-width:34rem;}
+.project__desc{font-size:clamp(1rem,.95rem + .3vw,1.15rem);line-height:1.55;color:var(--ink-600);}
+.chips{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem;}
+.chips li{font-family:var(--mono);text-transform:uppercase;font-size:11px;letter-spacing:-.01em;
+  color:var(--ink-600);background:rgba(23,19,14,.045);border:1px solid var(--hair);border-radius:8px;
+  padding:.42rem .62rem;}
+.project__ctas{display:flex;gap:clamp(1.25rem,.8rem + 2vw,2.75rem);flex-wrap:wrap;}
+
+.mock{position:absolute;inset:0;display:grid;place-items:center;padding:clamp(1.75rem,1rem + 4vw,5rem);}
+.mock::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(60% 55% at 28% 18%,rgba(255,255,255,.7),transparent 60%);
+  pointer-events:none;}
+.mock--bms{background:linear-gradient(150deg,#eef2ff 0%,#dde7ff 45%,#ebe4ff 100%);}
+.mock--flow{background:linear-gradient(150deg,#f3edff 0%,#e6dcff 45%,#f6e8ff 100%);}
+.mock--energy{background:linear-gradient(150deg,#fff3e8 0%,#ffe3cd 45%,#fff0da 100%);}
+.mock--hud{background:linear-gradient(150deg,#fff0ec 0%,#ffdfd4 45%,#ffe7dd 100%);}
+.mock__frame{position:relative;z-index:1;width:min(100%,33rem);border-radius:16px;overflow:hidden;
+  background:#fff;box-shadow:0 40px 90px -40px rgba(40,20,10,.35),0 12px 30px -18px rgba(40,20,10,.25);}
+.mock__bar{display:flex;align-items:center;gap:.7rem;padding:.7rem .9rem;
+  border-bottom:1px solid rgba(23,19,14,.07);}
+.mock__dots{display:inline-flex;gap:5px;}
+.mock__dots i{width:8px;height:8px;border-radius:50%;background:rgba(23,19,14,.12);}
+.mock__url{font-family:var(--mono);font-size:11px;letter-spacing:-.01em;color:var(--ink-400);
+  background:rgba(23,19,14,.04);border-radius:6px;padding:.2rem .6rem;}
+.mock__screen{display:grid;grid-template-columns:.9fr 1.1fr;min-height:15rem;}
+.mock__aside{position:relative;}
+.mock--bms .mock__aside{background:linear-gradient(160deg,#2c3a66,#5570ff);}
+.mock--flow .mock__aside{background:linear-gradient(160deg,#472a78,#8a5cff);}
+.mock--energy .mock__aside{background:linear-gradient(160deg,#8a4a12,#ffa23d);}
+.mock--hud .mock__aside{background:linear-gradient(160deg,#7a1f10,#ff5a3c);}
+.mock__aside::before{content:'';position:absolute;inset:18% 20%;border-radius:12px;
+  border:1px solid rgba(255,255,255,.35);
+  background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0));}
+.mock__main{display:flex;flex-direction:column;padding:1.3rem 1.4rem;gap:.55rem;}
+.mock__eyebrow{font-family:var(--mono);text-transform:uppercase;font-size:10px;letter-spacing:0;
+  color:var(--ink-400);}
+.mock__title{font-family:var(--serif);font-weight:300;font-variation-settings:'opsz' 16;
+  font-size:1.5rem;letter-spacing:-.02em;color:var(--ink-900);margin-bottom:.4rem;}
+.mock__line{height:7px;border-radius:4px;background:rgba(23,19,14,.08);}
+.mock__line--sh{width:62%;}
+.mock__btn{margin-top:auto;align-self:flex-start;font-family:var(--mono);text-transform:uppercase;
+  font-size:10px;color:#fff;background:var(--warm);border-radius:8px;padding:.5rem .8rem;}
+</style>
+</helmet>
+
+<section class="cases" id="work">
+  <header class="cases__intro">
+    <span class="eyebrow"><span class="eyebrow__dot"></span>Selected Work / Impact</span>
+    <h2 class="cases__lede">Complex products. Real problems. <em>Measurable outcomes.</em></h2>
+    <div class="wave-rule" aria-hidden="true">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="wr" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#ff6a2c" stop-opacity="0" />
+            <stop offset="0.5" stop-color="#ff6a2c" />
+            <stop offset="1" stop-color="#ff6a2c" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <path d="M0 20 H420 C480 20 500 4 560 4 C620 4 640 36 700 36 C760 36 780 20 1200 20"
+          fill="none" stroke="url(#wr)" stroke-width="1.5" />
+      </svg>
+    </div>
+  </header>
+
+  <div class="projects">
+    <article class="project">
+      <div class="project__media">
+        <div class="mock mock--bms">
+          <div class="mock__frame">
+            <div class="mock__bar"><span class="mock__dots"><i></i><i></i><i></i></span><span class="mock__url">cerevrax.app</span></div>
+            <div class="mock__screen">
+              <div class="mock__aside"></div>
+              <div class="mock__main">
+                <span class="mock__eyebrow">Building OS</span>
+                <span class="mock__title">Central control</span>
+                <span class="mock__line"></span><span class="mock__line mock__line--sh"></span>
+                <span class="mock__btn">Open dashboard</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="project__info">
+        <div class="project__top">
+          <span class="project__index">01 / 04</span>
+          <h3 class="project__name">CereVraX <span class="project__year">(2025)</span></h3>
+        </div>
+        <div class="project__mid">
+          <p class="project__desc">
+            CereVraX is an enterprise building-management platform. I led UX research,
+            the IoT dashboard UI, the design system, and coordination with the firmware
+            and data teams.
+          </p>
+          <ul class="chips">
+            <li>UX-RESEARCH</li><li>UI-DESIGN</li><li>DESIGN SYSTEM</li><li>IOT</li><li>BMS</li>
+          </ul>
+        </div>
+        <div class="project__ctas">
+          <a class="btn-play swap-trigger" href="#">
+            <span class="swap"><span data-label="Live website"><i>Live website</i></span></span>
+            <span class="play-btn" aria-hidden="true"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z" fill="currentColor" /></svg></span>
+          </a>
+          <a class="btn-play swap-trigger" href="#">
+            <span class="swap"><span data-label="Behance case study"><i>Behance case study</i></span></span>
+            <span class="play-btn" aria-hidden="true"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z" fill="currentColor" /></svg></span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-flip>
+      <div class="project__media">
+        <div class="mock mock--flow">
+          <div class="mock__frame">
+            <div class="mock__bar"><span class="mock__dots"><i></i><i></i><i></i></span><span class="mock__url">vstellar.studio</span></div>
+            <div class="mock__screen">
+              <div class="mock__aside"></div>
+              <div class="mock__main">
+                <span class="mock__eyebrow">Pipelines</span>
+                <span class="mock__title">Test &amp; ship</span>
+                <span class="mock__line"></span><span class="mock__line mock__line--sh"></span>
+                <span class="mock__btn">Run suite</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="project__info">
+        <div class="project__top">
+          <span class="project__index">02 / 04</span>
+          <h3 class="project__name">vStellar Studio <span class="project__year">(2024)</span></h3>
+        </div>
+        <div class="project__mid">
+          <p class="project__desc">
+            vStellar is a low-code test-automation studio. I owned the platform UX, the
+            visual flow builder, and the QA reporting experiences end to end.
+          </p>
+          <ul class="chips">
+            <li>PLATFORM-UX</li><li>LOW-CODE</li><li>QA-AUTOMATION</li><li>WEB-APP</li>
+          </ul>
+        </div>
+        <div class="project__ctas">
+          <a class="btn-play swap-trigger" href="#">
+            <span class="swap"><span data-label="Live website"><i>Live website</i></span></span>
+            <span class="play-btn" aria-hidden="true"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z" fill="currentColor" /></svg></span>
+          </a>
+          <a class="btn-play swap-trigger" href="#">
+            <span class="swap"><span data-label="Behance case study"><i>Behance case study</i></span></span>
+            <span class="play-btn" aria-hidden="true"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z" fill="currentColor" /></svg></span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project">
+      <div class="project__media">
+        <div class="mock mock--energy">
+          <div class="mock__frame">
+            <div class="mock__bar"><span class="mock__dots"><i></i><i></i><i></i></span><span class="mock__url">energy.grid</span></div>
+            <div class="mock__screen">
+              <div class="mock__aside"></div>
+              <div class="mock__main">
+                <span class="mock__eyebrow">Analytics</span>
+                <span class="mock__title">Every watt</span>
+                <span class="mock__line"></span><span class="mock__line mock__line--sh"></span>
+                <span class="mock__btn">View report</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="project__info">
+        <div class="project__top">
+          <span class="project__index">03 / 04</span>
+          <h3 class="project__name">Energy &amp; Solar <span class="project__year">(2024)</span></h3>
+        </div>
+        <div class="project__mid">
+          <p class="project__desc">
+            An IoT energy-intelligence suite for solar and grid monitoring. I designed the
+            real-time analytics dashboards and the data-visualization system.
+          </p>
+          <ul class="chips">
+            <li>DATA-VIZ</li><li>IOT</li><li>ANALYTICS</li><li>DASHBOARD</li>
+          </ul>
+        </div>
+        <div class="project__ctas">
+          <a class="btn-play swap-trigger" href="#">
+            <span class="swap"><span data-label="Live website"><i>Live website</i></span></span>
+            <span class="play-btn" aria-hidden="true"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z" fill="currentColor" /></svg></span>
+          </a>
+          <a class="btn-play swap-trigger" href="#">
+            <span class="swap"><span data-label="Behance case study"><i>Behance case study</i></span></span>
+            <span class="play-btn" aria-hidden="true"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z" fill="currentColor" /></svg></span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project" data-flip>
+      <div class="project__media">
+        <div class="mock mock--hud">
+          <div class="mock__frame">
+            <div class="mock__bar"><span class="mock__dots"><i></i><i></i><i></i></span><span class="mock__url">gate.access</span></div>
+            <div class="mock__screen">
+              <div class="mock__aside"></div>
+              <div class="mock__main">
+                <span class="mock__eyebrow">Operations</span>
+                <span class="mock__title">Secure flow</span>
+                <span class="mock__line"></span><span class="mock__line mock__line--sh"></span>
+                <span class="mock__btn">Open console</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="project__info">
+        <div class="project__top">
+          <span class="project__index">04 / 04</span>
+          <h3 class="project__name">Visitor Management <span class="project__year">(2023)</span></h3>
+        </div>
+        <div class="project__mid">
+          <p class="project__desc">
+            A security and visitor-management system with a HUD-style operator console.
+            I designed the access flows and the day-to-day operations interface.
+          </p>
+          <ul class="chips">
+            <li>ACCESS-CONTROL</li><li>HUD</li><li>OPERATIONS</li><li>SECURITY</li>
+          </ul>
+        </div>
+        <div class="project__ctas">
+          <a class="btn-play swap-trigger" href="#">
+            <span class="swap"><span data-label="Live website"><i>Live website</i></span></span>
+            <span class="play-btn" aria-hidden="true"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z" fill="currentColor" /></svg></span>
+          </a>
+          <a class="btn-play swap-trigger" href="#">
+            <span class="swap"><span data-label="Behance case study"><i>Behance case study</i></span></span>
+            <span class="play-btn" aria-hidden="true"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z" fill="currentColor" /></svg></span>
+          </a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+</x-dc>
+</body>
+</html>

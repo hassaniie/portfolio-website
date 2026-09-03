@@ -1,0 +1,12 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 900, "is_interactive": true },
+    { "file": "Mobile.dc.html", "x": 1560, "y": 0, "w": 390, "h": 844, "is_interactive": true },
+    { "file": "Work.dc.html", "x": 0, "y": 1060, "w": 1440, "h": 4500 }
+  ],
+  "annotations": [
+    { "id": "note-hero", "x": 1560, "y": 900, "w": 390, "text": "Hero + nav — recreated from src/styles/{base,layout}.css and index.html.\nMain = desktop; Mobile has a working hamburger toggle. Live Lahore clock ticks for real." },
+    { "id": "note-work", "x": 0, "y": 5620, "w": 480, "text": "Selected Work section, all 4 projects, alternating layout.\nWebGL hero shader is approximated here with a static CSS gradient; scroll-linked motion (GSAP/Lenis parallax, signal pulse) isn't replicated in this static canvas." }
+  ],
+  "launch": { "view": "canvas" }
+}
